@@ -8,6 +8,49 @@
         WindowStartupLocation="CenterScreen"
         Title="TM Daily TrackR" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Calendar x:Name="calendar" Grid.Column="0" Margin="10" DisplayDate="2024-05-22" SelectedDate="2024-05-22"/>
+
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TabControl>
+                <TabItem Header="Daily">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Margin="10" Text="Activities Date: 22.05.2024" FontWeight="Bold"/>
+
+                        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" HeadersVisibility="Column" SelectionMode="Single" ItemsSource="{Binding Activities}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="No." Binding="{Binding No}" Width="50"/>
+                                <DataGridTextColumn Header="Project type" Binding="{Binding ProjectType}" Width="150"/>
+                                <DataGridTextColumn Header="Task type" Binding="{Binding TaskType}" Width="100"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Overview">
+               
+                </TabItem>
+            </TabControl>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+                <Button Content="Create" Margin="5" ToolTip="CTRL + N"/>
+                <Button Content="Delete" Margin="5" ToolTip="DEL"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
