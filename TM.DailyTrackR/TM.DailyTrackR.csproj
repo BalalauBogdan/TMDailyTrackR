@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\TM.DailyTrackR.Common\TM.DailyTrackR.Common.csproj" />
+    <ProjectReference Include="..\TM.DailyTrackR.DataType\TM.DailyTrackR.DataType.csproj" />
+    <ProjectReference Include="..\TM.DailyTrackR.ViewModel\TM.DailyTrackR.ViewModel.csproj" />
+    <ProjectReference Include="..\TM.DailyTrackR.View\TM.DailyTrackR.View.csproj" />
+  </ItemGroup>
+
+</Project>
