@@ -13,6 +13,7 @@ namespace TM.DailyTrackR.DataType
         public string TaskType { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
+        public string User {  get; set; } 
     }
 }
 

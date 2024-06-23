@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TM.DailyTrackR.View"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="TM Daily TrackR" Height="450" Width="800">
@@ -19,6 +19,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TabControl>
@@ -29,28 +30,83 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Margin="10" Text="Activities Date: 22.05.2024" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Margin="10" FontWeight="Bold">
+                            <Run Text="Activities Date: "/>
+                            <Run Text="{Binding ElementName=calendar, Path=SelectedDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                        </TextBlock>
 
-                        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" HeadersVisibility="Column" SelectionMode="Single" ItemsSource="{Binding Activities}">
+                        <Button x:Name="addButton" Content="+" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="AddButton_Click"/>
+
+                        <DataGrid x:Name="dailyDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" HeadersVisibility="Column" SelectionMode="Single" ItemsSource="{Binding Activities}" CurrentCellChanged="DailyDataGrid_CurrentCellChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="No." Binding="{Binding No}" Width="50"/>
-                                <DataGridTextColumn Header="Project type" Binding="{Binding ProjectType}" Width="150"/>
-                                <DataGridTextColumn Header="Task type" Binding="{Binding TaskType}" Width="100"/>
+                                <DataGridTextColumn Header="No." Binding="{Binding No}" Width="50" IsReadOnly="True"/>
+                                <DataGridComboBoxColumn Header="Project type" SelectedValueBinding="{Binding ProjectType}" Width="150">
+                                    <DataGridComboBoxColumn.ItemsSource>
+                                        <x:Array Type="{x:Type sys:String}">
+                                            <sys:String>Administrative</sys:String>
+                                            <sys:String>Marketing</sys:String>
+                                            <sys:String>Meeting</sys:String>
+                                        </x:Array>
+                                    </DataGridComboBoxColumn.ItemsSource>
+                                </DataGridComboBoxColumn>
+                                <DataGridComboBoxColumn Header="Task type" SelectedValueBinding="{Binding TaskType}" Width="100">
+                                    <DataGridComboBoxColumn.ItemsSource>
+                                        <x:Array Type="{x:Type sys:String}">
+                                            <sys:String>New</sys:String>
+                                            <sys:String>Fix</sys:String>
+                                        </x:Array>
+                                    </DataGridComboBoxColumn.ItemsSource>
+                                </DataGridComboBoxColumn>
                                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                <DataGridComboBoxColumn Header="Status" SelectedValueBinding="{Binding Status}" Width="100">
+                                    <DataGridComboBoxColumn.ItemsSource>
+                                        <x:Array Type="{x:Type sys:String}">
+                                            <sys:String>In progress</sys:String>
+                                            <sys:String>On hold</sys:String>
+                                            <sys:String>Done</sys:String>
+                                        </x:Array>
+                                    </DataGridComboBoxColumn.ItemsSource>
+                                </DataGridComboBoxColumn>
                             </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Delete" Click="DeleteMenuItem_Click"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
                         </DataGrid>
                     </Grid>
                 </TabItem>
+
                 <TabItem Header="Overview">
-               
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Margin="10" Text="Activities Date: 22.05.2024" FontWeight="Bold"/>
+
+                        <DataGrid x:Name="overviewDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" HeadersVisibility="Column" SelectionMode="Single" ItemsSource="{Binding Activities}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="No." Binding="{Binding No}" Width="50"/>
+                                <DataGridTextColumn Header="Project type" Binding="{Binding ProjectType}" Width="150"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                <DataGridTextColumn Header="User" Binding="{Binding User}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10">
+                            <TextBlock Text="Export activity in" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="startDatePicker" Margin="10,0"/>
+                            <TextBlock Text="to" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="endDatePicker" Margin="10,0"/>
+                            <Button Content="Export" Click="ExportButton_Click" Margin="10,0"/>
+                        </StackPanel>
+                    </Grid>
                 </TabItem>
             </TabControl>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
-                <Button Content="Create" Margin="5" ToolTip="CTRL + N"/>
-                <Button Content="Delete" Margin="5" ToolTip="DEL"/>
-            </StackPanel>
         </Grid>
     </Grid>
 </Window>
